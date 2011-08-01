@@ -1,0 +1,32 @@
+/* line 3, ../../app/assets/stylesheets/application.css.sass */
+.player {
+  background: #eeeeee;
+  padding: 0.5em;
+  min-height: 120px;
+  width: 350px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -o-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -khtml-border-radius: 4px;
+  border-radius: 4px;
+}
+/* line 10, ../../app/assets/stylesheets/application.css.sass */
+.player .volume {
+  height: 120px;
+  width: 20px;
+  float: left;
+}
+/* line 15, ../../app/assets/stylesheets/application.css.sass */
+.player .pos .progress {
+  width: 200px;
+  display: inline-block;
+}
+/* line 20, ../../app/assets/stylesheets/application.css.sass */
+.player .controls button {
+  height: 21px;
+}
+/* line 22, ../../app/assets/stylesheets/application.css.sass */
+.player .controls .play, .player .controls .pause {
+  width: 5em;
+}

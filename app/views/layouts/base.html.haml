@@ -1,0 +1,16 @@
+!!! XML
+!!! 5
+%html{ :xmlns => 'http://www.w3.org/1999/xhtml', 'xml:lang' => 'en', :lang => 'en' }
+  %head
+    %meta{ 'http-equiv' => 'Content-Type', :content => 'text/html; charset=utf-8' }/
+    %link{ :rel => 'SHORTCUT ICON', :href => '/favicon.ico' }/
+
+    %link{href: '/assets/all.css', media: 'screen', rel: 'stylesheet', type: 'text/css' }/
+    %script{src: '/assets/all.js', type: 'text/javascript' }
+
+    = csrf_meta_tag
+    = yield :page_head
+
+    %title= (title = yield(:page_title)).present? ? title : ""
+
+  = yield :page_body

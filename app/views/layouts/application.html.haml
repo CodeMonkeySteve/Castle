@@ -1,0 +1,6 @@
+- content_for :page_body do
+  %body
+    -#= display_notices
+    = yield
+    = yield :page_tail
+= render :file => 'layouts/base'

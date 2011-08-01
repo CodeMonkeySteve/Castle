@@ -1,0 +1,33 @@
+.volume{style: 'display: none'}
+  .slider
+  %span.level
+
+.pos{style: 'display: none'}
+  .progress
+  %span.text
+
+{{if loaded && track}}
+.track
+  ${track.title}
+  %br/
+  ${track.artist} /
+  %em ${track.album}
+  (${track.year})
+  \#${track.num}
+{{/if}}
+
+.controls
+  %button.play
+  %button.pause
+  %button.stop
+  %a{href: '/tracks/new'} upload...
+
+{{if playlist.length}}
+.playlist{style: 'display: none'}
+  Playlist
+  %ol.tracks
+    {{each playlist}}
+    %li {{= JSON.stringify($value)}}
+    {{/each}}
+{{/if}}
+

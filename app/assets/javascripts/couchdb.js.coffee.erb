@@ -1,0 +1,7 @@
+jQuery(document).ready () ->
+  _.extend Backbone.couch_connector.config,
+    db_name : '<%= CouchPotato::Config.database_name.inspect %>'
+    ddoc_name : 'backbone'
+    view_name : 'by_collection'
+    global_changes : true
+    base_url : '/db'

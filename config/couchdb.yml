@@ -1,0 +1,19 @@
+default: &default
+  validation_framework: :active_model 
+  split_design_documents_per_view: true
+
+development:
+  #<<: *default
+  validation_framework: :active_model
+  split_design_documents_per_view: true
+  database: castle-dev
+test:
+  #<<: *default
+  validation_framework: :active_model
+  split_design_documents_per_view: true
+  database: castle-test
+production:
+  #<<: *default
+  validation_framework: :active_model
+  split_design_documents_per_view: true
+  database: <%= ENV['COUCHDB_URL'] %>

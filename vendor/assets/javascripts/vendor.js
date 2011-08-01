@@ -1,0 +1,9 @@
+//= require        underscore/underscore.js
+//= require_tree ./underscore
+//= require        jquery/jquery.js
+//= require_tree ./jquery
+//= require        backbone/backbone.js
+//= require_tree ./backbone
+//= require        plupload/plupload.full.js
+//= require_tree ./plupload
+//= require_tree ./

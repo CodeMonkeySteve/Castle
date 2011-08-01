@@ -1,0 +1,10 @@
+.bundle
+.kdev4
+log/*.log
+public/assets
+.sass-cache/*
+tmp/
+vendor/bundle/*
+!vendor/bundle/cache/*.gem
+*.swp
+.rspec
