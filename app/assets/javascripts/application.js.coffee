@@ -5,8 +5,12 @@ root.App =
 
   init: ->
     new App.Controller()
-    App.player = new Player('/player', 3.0)
+    App.player = new Player('/player', 10.0)
     Backbone.history.start()
+
+$(document).ajaxSend (e, xhr, opts) ->
+  token = $("meta[name='csrf-token']").attr('content')
+  xhr.setRequestHeader('X-CSRF-Token', token)
 
 @pad0  = (n) -> if n < 10  then '0'+n  else n
 @pad00 = (n) ->

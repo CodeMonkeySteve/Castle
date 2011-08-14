@@ -10,6 +10,7 @@ module ::Guard
     end
 
     def run_all
+      UI.info "Rebuilding all assets"
       build_assets
       true
     end
