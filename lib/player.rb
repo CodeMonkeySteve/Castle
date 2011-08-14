@@ -14,7 +14,7 @@ class Player < MPlayer::Player
 
 protected
   def update_playlist
-    #playlist = CouchPotato.database.view Track.by_tag(@mood)
+    self.playlist += Track.tag_list.startkey([@mood]).limit(10).to_a  if self.playlist.size < 10
   end
 
   def on_track_end( track )

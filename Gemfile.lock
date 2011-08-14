@@ -25,15 +25,6 @@ GIT
     ruby-ogginfo (0.6.5)
 
 GIT
-  remote: git://github.com/RailsPlay/couch_potato.git
-  revision: 12bcf4877c3823708148c2d8194a352c1e3afe27
-  specs:
-    couch_potato (0.5.4)
-      activemodel
-      couchrest (>= 1.0.1)
-      json
-
-GIT
   remote: git://github.com/RailsPlay/em-synchrony.git
   revision: 842c96b5e2006448a648ab822439bd1b059d02b3
   specs:
@@ -131,6 +122,11 @@ GEM
       mime-types (~> 1.15)
       multi_json (~> 1.0.0)
       rest-client (~> 1.6.1)
+    couchrest_model (1.1.2)
+      activemodel (~> 3.0)
+      couchrest (~> 1.1.2)
+      mime-types (~> 1.15)
+      tzinfo (~> 0.3.22)
     crack (0.1.8)
     daemons (1.1.4)
     database_cleaner (0.6.7)
@@ -290,7 +286,7 @@ DEPENDENCIES
   coffee-filter
   coffee-rails (~> 3.1.0.rc)
   compass!
-  couch_potato!
+  couchrest_model
   database_cleaner
   em-http-request
   em-synchrony!

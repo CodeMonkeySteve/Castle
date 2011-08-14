@@ -1,19 +1,16 @@
-default: &default
-  validation_framework: :active_model 
-  split_design_documents_per_view: true
+# default: &default
+#   protocol: 'https'
+#   host: sample.cloudant.com
+#   port: 443
+#   username: test
+#   password: user
+#   prefix: project
+#   suffix: dev
 
 development:
-  #<<: *default
-  validation_framework: :active_model
-  split_design_documents_per_view: true
-  database: castle-dev
+  suffix: dev
+
 test:
-  #<<: *default
-  validation_framework: :active_model
-  split_design_documents_per_view: true
-  database: castle-test
+  suffix: test
+
 production:
-  #<<: *default
-  validation_framework: :active_model
-  split_design_documents_per_view: true
-  database: <%= ENV['COUCHDB_URL'] %>

@@ -16,7 +16,7 @@ gem 'em-synchrony', require: %w(em-synchrony em-synchrony/em-http), git: 'git://
 gem 'rack-fiber_pool', require: 'rack/fiber_pool'
 
 # database
-gem 'couch_potato', git: 'git://github.com/RailsPlay/couch_potato.git' #:path => '/home/steve/src/forks/couch_potato'
+gem 'couchrest_model'
 
 # asset template engines
 group :assets do

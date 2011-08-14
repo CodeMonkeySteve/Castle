@@ -1,59 +1,41 @@
-class Track
-  include CouchPotato::Persistence
-
+class Track < CouchRest::Model::Base
   property :title
   property :artist
   property :album
   property :date
-  property :tracknum, type: Fixnum
-  property :length,   type: Float
-  property :bitrate,  type: Float
+  property :tracknum, Fixnum
+  property :length,   Float
+  property :bitrate,  Float
 
   property :created_at
   property :updated_at
 
-  property :tags,  type: Array
+  property :tags,  [String]
+
+  timestamps!
 
   validates_presence_of :title, :artist
-  validates_numericality_of :tracknum, only_integer: true, greater_than: 0
+  validates_numericality_of :tracknum, only_integer: true, greater_than: 0, allow_nil: true
 
-  view :by_artist_and_album_and_title, key: [:artist, :album, :title]
-#   view :by_tag, type: :raw,
-#     map: "function(doc) {
-#       if ( doc.tags ) {
-#         tags = docs.tags
-#         for ( id in tags ) {
-#           for ( tag in tags[id] ) {
-#             val = tags[id][tag]
-#             emit(tag, {sum: val, count: 1, avg: val})
-#           }
-#         }
-#       }
-#     }",
-#     reduce: "function(keys, values) {
-#       res = {sum: 0, count: 0}
-#       for ( idx in values ) {
-#         val = values[idx]
-#         res.sum += val.sum
-#         res.count += val.count
-#       }
-#       res.avg = res.sum / res.count
-#       return(res)
-#     }"
+  design do
+    view :by_artist_and_album_and_title, :allow_nil => true
+    view :tag_list,
+      :map => "function(doc) {
+        if (doc['type'] == 'Track' && doc.tags) {
+          doc.tags.forEach(function(tag) {  emit(tag, 1)  })
+        }
+      }",
+      :reduce => "function(keys, values, rereduce) {  return sum(values)  }"
+  end
 
-  def self.from_file( path, content_type = nil, filename = nil )
+  def self.from_file( path, content_type = nil )
     info = AudioInfo.new(path.to_s, content_type)
-    filename ||= File.basename(path)
     tag = info.to_h
 
     title, artist, album = tag.values_at(*%w(title artist album)).map { |v| v.try(:strip) }
-    track = CouchPotato.database.first self.by_artist_and_album_and_title( key: [artist, album, title] )
+    track = self.find_by_artist_and_album_and_title([artist, album, title])
 
-    unless track
-      track = Track.new
-      track.attributes = tag
-      track._attachments['body'] = { 'name' => filename, 'content_type' => info.content_type, 'data' => File.read(path) }
-    end
+    track ||= Track.new( tag.reject { |k, v| v.blank? } )
     track
   end
 end

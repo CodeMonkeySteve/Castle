@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Track do
   before(:all) do
-    @attrs = Factory.attributes_for(:track)
+    @attrs = Factory.attributes_for(:track).with_indifferent_access
   end
 
   describe "with an MP3 file" do
@@ -17,8 +17,7 @@ describe Track do
       track = Track.from_file @path, 'audio/mpeg'
       track.attributes.slice(*@attrs.keys).should == @attrs
       track.bitrate.should be_within(10).of(128)
-  #      assert track.new_document?
-  #    assert_eql? track, Track.by_artist_and_album_and_name([track.artist, track.album, track.name])
+      track.should be_new_record
     end
   end
 
@@ -34,8 +33,7 @@ describe Track do
       track = Track.from_file @path, 'audio/ogg'
       track.attributes.slice(*@attrs.keys).should == @attrs
       track.bitrate.should be_within(10).of(128)
-  #      assert ! track.new_document?
-  #    assert_eql? track, Track.by_artist_and_album_and_name([track.artist, track.album, track.name])
+      track.should be_new_record
     end
   end
 end

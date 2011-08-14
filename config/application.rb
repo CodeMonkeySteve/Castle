@@ -28,6 +28,11 @@ module Castle
       g.fixture_replacement :factory_girl, :dir => 'spec/factories'
     end
 
+    # CouchDB
+    CouchRest::Model::Base.configure do |conf|
+      conf.connection[:join] = '-'
+    end
+
     # Asset pipeline
     config.assets.enabled = true
     config.assets.precompile = %w(all.js all.css)
