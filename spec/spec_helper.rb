@@ -8,8 +8,6 @@ RSpec.configure do |config|
   def config.fixture_path()  @fixture_path ||= Rails.root+'spec/fixtures'  end
 
   Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
-
-  config.include AudioFixtures
 end
 
 # clear screen

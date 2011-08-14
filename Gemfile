@@ -32,6 +32,7 @@ end
 gem 'active_reload'
 gem 'compass', git: 'https://github.com/chriseppstein/compass.git', branch: 'rails31'
 gem 'mplayer', git: 'git://github.com/CodeMonkeySteve/ruby-mplayer.git' #:path => '/home/steve/src/ruby-mplayer'
+gem 'rack-openid', :require => 'rack/openid'
 gem 'ruby-ogginfo',   require: false,       git: 'git://github.com/CodeMonkeySteve/ruby-ogginfo.git'
 gem 'ruby-audioinfo', require: 'audioinfo', git: 'git://github.com/CodeMonkeySteve/ruby-audioinfo.git' #:path => '/home/steve/src/forks/ruby-audioinfo
 gem 'thin'

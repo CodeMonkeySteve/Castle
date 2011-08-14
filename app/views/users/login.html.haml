@@ -1,0 +1,6 @@
+- content_for :title, 'Login'
+= form_tag login_url, :id => 'login'  do
+  %h1 Login
+  = label_tag :openid_identifier, 'OpenID:'
+  = text_field_tag :openid_identifier, nil, :id => 'openid_identifier', :size => 35
+  = submit_tag 'Login'

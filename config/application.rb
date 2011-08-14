@@ -42,6 +42,9 @@ module Castle
       config.assets.precompile << 'test.js'
     end
 
+    # OpenID
+    config.middleware.insert_after ActionDispatch::Session::CookieStore, Rack::OpenID #, OpenidMongodbStore::Store.new
+
     # Rack fiber pool
     config.middleware.insert_before 0, Rack::FiberPool
     config.threadsafe!

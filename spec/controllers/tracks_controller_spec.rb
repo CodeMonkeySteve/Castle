@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe TracksController do
+  before do
+    sign_in @user = Factory.create(:user)
+  end
+
   it "#new" do
     get :new
     response.should be_success

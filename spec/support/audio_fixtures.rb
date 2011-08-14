@@ -23,3 +23,7 @@ module AudioFixtures
     @file.close
   end
 end
+
+RSpec.configure do |config|
+  config.include AudioFixtures
+end
