@@ -7,8 +7,7 @@ class PlayersController < ApplicationController
   end
 
   def play
-    @player.play '/home/steve/Music/Awesome Covers 1-20/Awesome Covers Vol 17/Solitary Man.mp3'
-    @player.volume = 50  unless @player.volume
+    @player.play
     render json: @player.as_json
   end
 

@@ -8,6 +8,7 @@ if Rails.env == 'development'
   Bundler.require( 'development_' + /darwin|linux|win32/.match(RUBY_PLATFORM)[0] )
 end
 
+require 'core_ext'
 require 'player'
 
 module Castle

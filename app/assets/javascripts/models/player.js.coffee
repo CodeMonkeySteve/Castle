@@ -42,7 +42,7 @@ class @Player
         when 'paused'  then @loaded = @paused  = true
       @trigger('change:status', @status)
 
-    for key in ['track', 'pos', 'volume']
+    for key in ['track', 'pos', 'volume', 'playlist']
       if resp[key]? && !_.isEqual(resp[key], @[key])
         @[key] = resp[key]
         delete resp[key]

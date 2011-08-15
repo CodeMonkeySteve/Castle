@@ -1,33 +1,27 @@
-.volume{style: 'display: none'}
-  .slider
-  %span.level
+.player.panel
+  .volume{style: 'display: none'}
+    %a.up
+    .slider
+    %a.down
+    %span.text
 
-.pos{style: 'display: none'}
-  .progress
-  %span.text
+  .controls
+    %a.play{href: '#'}
+    %a.pause{href: '#'}
+    %a.stop{href: '#'}
+    %a.vol_down{href: '#'}
+    %a.vol_up{href: '#'}
+    %a.upload{href: '/tracks/new'}
 
-{{if loaded && track}}
-.track
-  ${track.title}
-  %br/
-  ${track.artist} /
-  %em ${track.album}
-  (${track.year})
-  \#${track.num}
-{{/if}}
-
-.controls
-  %button.play
-  %button.pause
-  %button.stop
-  %a{href: '/tracks/new'} upload...
+  .pos{style: 'display: none'}
+    .progress
+    .text
 
 {{if playlist.length}}
-.playlist{style: 'display: none'}
-  Playlist
-  %ol.tracks
+.playlist.panel
+  %ul.tracks
     {{each playlist}}
-    %li {{= JSON.stringify($value)}}
+    %li.track {{tmpl($value) 'player_track'}}
     {{/each}}
 {{/if}}
 

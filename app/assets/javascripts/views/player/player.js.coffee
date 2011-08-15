@@ -18,6 +18,7 @@ class App.Views.Player extends App.View
     _.bindAll(this, 'render', 'updateStatus', 'updatePos', 'updateVol')
     App.player.bind('change:status', @updateStatus)
     App.player.bind('change:track', @render)
+    App.player.bind('change:playlist', @render)
     App.player.bind('change:pos', @updatePos)
     App.player.bind('change:volume', @updateVol)
 

@@ -7,19 +7,18 @@ class Track < CouchRest::Model::Base
   property :length,   Float
   property :bitrate,  Float
 
-  property :created_at
-  property :updated_at
-
-  property :tags,  [String]
-
   timestamps!
 
   validates_presence_of :title, :artist
   validates_numericality_of :tracknum, only_integer: true, greater_than: 0, allow_nil: true
 
+  def url
+    self.attachment_url(self.attachments.keys[0])
+  end
+
   design do
     view :by_artist_and_album_and_title, :allow_nil => true
-    view :tag_list,
+    view :by_tag,
       :map => "function(doc) {
         if (doc['type'] == 'Track' && doc.tags) {
           doc.tags.forEach(function(tag) {  emit(tag, 1)  })
