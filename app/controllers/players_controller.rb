@@ -23,7 +23,12 @@ class PlayersController < ApplicationController
   end
 
   def volume
-    @player.volume = params[:vol].to_i
+    @player.volume =
+      if %w(- +).include? params[:vol][0]
+        @player.volume + params[:vol].to_i
+      else
+        params[:vol].to_i
+      end
     render json: @player.as_json
   end
 

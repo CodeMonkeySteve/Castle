@@ -2,13 +2,17 @@ class App.Views.Player extends App.View
   className: 'player'
 
   events:
-    'click button.play':  'play'
-    'click button.pause': 'pause'
-    'click button.stop':  'stop'
+    'click .controls .play':     'play'
+    'click .controls .pause':    'pause'
+    'click .controls .stop':     'stop'
+    'click .controls .vol_down': 'vol_down'
+    'click .controls .vol_up':   'vol_up'
 
   play:  -> if App.player.paused  then App.player.pause()  else App.player.play()
   pause: -> App.player.pause()
   stop:  -> App.player.stop()
+  vol_down: (ev) -> App.player.incrVol(-5)
+  vol_up:   (ev) -> App.player.incrVol(+5)
 
   initialize: ->
     _.bindAll(this, 'render', 'updateStatus', 'updatePos', 'updateVol')
@@ -26,12 +30,16 @@ class App.Views.Player extends App.View
       stop:  (event, ui) -> App.player.setVol(ui.value)
 
     @pos = @$('.pos .progress').progressbar()
-    @updateVol(App.player.volume)  if App.player.volume
 
-    @play_btn  = @$('.controls button.play' ).button( icons: { primary: 'ui-icon-play'  }, text: false )
-    @pause_btn = @$('.controls button.pause').button( icons: { primary: 'ui-icon-pause' }, text: false )
-    @stop_btn  = @$('.controls button.stop' ).button( icons: { primary: 'ui-icon-stop'  }, text: false )
+    @play_btn  = @$('.controls a.play' ).button( icons: { primary: 'ui-icon-play'  }, text: false )
+    @pause_btn = @$('.controls a.pause').button( icons: { primary: 'ui-icon-pause' }, text: false )
+    @stop_btn  = @$('.controls a.stop' ).button( icons: { primary: 'ui-icon-stop'  }, text: false )
+    @$('.controls a.upload' ).button( icons: { primary: 'ui-icon-plusthick' }, text: false )
+    @$('.controls a.vol_down' ).button( icons: { primary: 'ui-icon-volume-off' }, text: false )
+    @$('.controls a.vol_up'   ).button( icons: { primary: 'ui-icon-volume-on' }, text: false )
     @updateStatus()
+    @updatePos(App.player.pos)
+    @updateVol(App.player.volume)
     App.player._refresh()
 
   updateStatus: ->
@@ -58,12 +66,17 @@ class App.Views.Player extends App.View
     true
 
   updatePos: (pos) ->
-    return unless (track = App.player.track)?
+    return unless pos? && (track = App.player.track)?
     fmt = (d) -> parseInt((d / 60) % 60) + ':' + pad0(parseInt(d % 60))
     @pos.progressbar('value', 100.0 * pos / track.length )
     @$('.pos .text').html("#{fmt(pos)} / #{fmt(track.length)}")
 
   updateVol: (vol) ->
-    @volume.slider('value', vol)
-    @$('.volume .level').html(vol)
-    $('.volume').show()  unless App.player.stopped || !App.player.loaded
+    return unless vol?
+    @volume.progressbar('value', vol)
+    @$('.volume .text').html(vol)
+    if App.player.stopped || !App.player.loaded
+      $('.vol_up,.vol_down').button('disable')
+    else 
+      $('.vol_up'  ).button(if App.player.volume < 100 then 'enable' else 'disable')
+      $('.vol_down').button(if App.player.volume >   0 then 'enable' else 'disable')

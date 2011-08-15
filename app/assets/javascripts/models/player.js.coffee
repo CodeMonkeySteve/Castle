@@ -7,10 +7,10 @@ class @Player
     @pollTime = pollTime * 1000.0
     @pollTimer = null
 
-  play:         -> @_refresh(action: 'play')
-  pause:        -> @_refresh(action: 'pause')
-  stop:         -> @_refresh(action: 'stop')
-  setVol: (vol) -> @_refresh(action: 'volume', data: {vol: vol})
+  play:          -> @_refresh(action: 'play')
+  pause:         -> @_refresh(action: 'pause')
+  stop:          -> @_refresh(action: 'stop')
+  incrVol: (vol) -> @_refresh(action: 'volume', data: {vol: if vol < 0 then vol else "+#{vol}"})
 
   _refresh: (opts = {}) ->
     url = @url
