@@ -12,7 +12,7 @@ gem 'rails3-generators'
 # I/O
 gem 'eventmachine', '= 0.12.10'   # must be same as Heroku
 gem 'em-http-request'
-gem 'em-synchrony', require: %w(em-synchrony em-synchrony/em-http), git: 'git://github.com/RailsPlay/em-synchrony.git'
+gem 'em-synchrony', require: %w(em-synchrony em-synchrony/em-http), git: 'https://github.com/RailsPlay/em-synchrony.git'
 gem 'rack-fiber_pool', require: 'rack/fiber_pool'
 
 # database
@@ -31,10 +31,10 @@ end
 # other
 gem 'active_reload'
 gem 'compass', git: 'https://github.com/chriseppstein/compass.git', branch: 'rails31'
-gem 'mplayer', git: 'git://github.com/CodeMonkeySteve/ruby-mplayer.git' #:path => '/home/steve/src/ruby-mplayer'
+gem 'mplayer', path: '/home/steve/src/ruby-mplayer' #git: 'https://github.com/CodeMonkeySteve/ruby-mplayer.git'
 gem 'rack-openid', :require => 'rack/openid'
-gem 'ruby-ogginfo',   require: false,       git: 'git://github.com/CodeMonkeySteve/ruby-ogginfo.git'
-gem 'ruby-audioinfo', require: 'audioinfo', git: 'git://github.com/CodeMonkeySteve/ruby-audioinfo.git' #:path => '/home/steve/src/forks/ruby-audioinfo
+gem 'ruby-ogginfo',   require: false,       git: 'https://github.com/CodeMonkeySteve/ruby-ogginfo.git'
+gem 'ruby-audioinfo', require: 'audioinfo', git: 'https://github.com/CodeMonkeySteve/ruby-audioinfo.git' #:path => '/home/steve/src/forks/ruby-audioinfo
 gem 'thin'
 
 group :production do
@@ -57,7 +57,7 @@ group :development do
 end
 
 group :development_linux do
-  gem 'rb-inotify'
+  gem 'rb-inotify', git: 'https://github.com/hron/rb-inotify.git', branch: 'fix-guard-crash-when-file-is-deleted-very-fast'
   gem 'libnotify'
 end
 group :development_darwin do
@@ -71,7 +71,7 @@ end
 
 group :test do
   gem 'database_cleaner'
-  gem 'factory_girl_rails', git: 'git://github.com/thoughtbot/factory_girl_rails.git'
+  gem 'factory_girl_rails', git: 'https://github.com/thoughtbot/factory_girl_rails.git'
   gem 'rr'
   gem 'rspec-rails'
   gem 'turn', require: false
