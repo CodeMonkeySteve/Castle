@@ -64,6 +64,15 @@ class App.Views.Player extends App.View
     if p.playing || p.paused  then @$('.pos')     .show()  else @$('.pos')     .hide()
     if p.loaded  && p.track   then @$('.track')   .show()  else @$('.track')   .hide()
     if p.playlist.length      then @$('.playlist').show()  else @$('.playlist').hide()
+
+    if @posTimer?
+      clearInterval(@posTimer)
+      @posTimer = null
+
+    if p.playing
+      @posTimer = setInterval( =>
+        @updatePos(App.player.pos += 1)  if App.player.pos? && App.player.track? && (App.player.pos <= App.player.track.length)
+      ,  1000)
     true
 
   updatePos: (pos) ->
