@@ -4,7 +4,7 @@ root.App =
   Collections: {}
 
   init: ->
-    new App.Controller()
+    new App.Router()
     App.player = new Player('/player', 10.0)
     Backbone.history.start()
 
