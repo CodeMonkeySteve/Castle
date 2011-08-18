@@ -43,6 +43,10 @@ class App.Views.Player extends App.View
     @updateVol(App.player.volume)
     App.player._refresh()
 
+  unrender: ->
+    _stopPoll()
+    App.player.stopPoll()
+
   updateStatus: ->
     p = App.player
     if p.stopped || !p.loaded
@@ -90,3 +94,8 @@ class App.Views.Player extends App.View
     else 
       $('.vol_up'  ).button(if App.player.volume < 100 then 'enable' else 'disable')
       $('.vol_down').button(if App.player.volume >   0 then 'enable' else 'disable')
+
+  _stopPoll: ->
+    if @posTimer?
+      clearInterval(@posTimer)
+      @posTimer = null

@@ -11,5 +11,7 @@ class App.Router extends Backbone.Router
     @_useView( new App.Views.Upload() )
 
   _useView: (view) ->
-    $('body').html( view.el )
-    view.render()
+    @view.unrender()  if @view? && @view.unrender?
+    @view = view
+    $('body').html( @view.el )
+    @view.render()

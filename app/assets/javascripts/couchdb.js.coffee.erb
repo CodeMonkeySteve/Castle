@@ -1,6 +1,6 @@
 jQuery(document).ready () ->
   _.extend Backbone.couch_connector.config,
-    db_name : <%= CouchRest::Model::Base.connection[:prefix].to_json %>
+    db_name : <%= CouchRest::Model::Base.database.name.to_json %>
     ddoc_name : 'backbone'
     view_name : 'by_collection'
     global_changes : true

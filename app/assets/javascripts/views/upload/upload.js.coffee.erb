@@ -1,0 +1,29 @@
+class App.Views.Upload extends App.View
+  className: 'upload'
+
+  initialize: ->
+    _.bindAll(this, 'render', 'onUpload')
+
+  render: ->
+    $(@el).html( $.tmpl('upload_main') )
+
+    @$('#uploader').pluploadQueue
+      runtimes: 'html5'
+      url: '/tracks'
+      headers: { 'X-CSRF-Token': $('meta[name=csrf-token]').attr('content') }
+      max_file_size: '50mb'
+      urlstream_upload: true
+      file_data_name: 'file'
+      multiple_queues: true
+      rename: true
+      filters: [{ title: "Audio files", extensions: "<%= AudioInfo::SUPPORTED_EXTENSIONS.join(',') %>" }]
+      init:
+        FileUploaded: @onUpload
+
+    @$('.controls .tags').combobox({ matchFromStart: false, allowAnyValue: true, multiWord: true })
+
+  onUpload: (up, file, info) ->
+    tags = $('.controls .tags').val()
+    if tags? && tags.length
+      id = JSON.parse(info.response)._id
+      #jQuery.ajax("/tracks/#{id}", type: 'PUT', data: { id: id, track: {tags: tags} } )

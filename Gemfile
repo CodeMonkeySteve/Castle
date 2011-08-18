@@ -31,10 +31,10 @@ end
 # other
 gem 'active_reload'
 gem 'compass', git: 'https://github.com/chriseppstein/compass.git', branch: 'rails31'
-gem 'mplayer', path: '/home/steve/src/ruby-mplayer' #git: 'https://github.com/CodeMonkeySteve/ruby-mplayer.git'
+gem 'mplayer', git: 'https://github.com/CodeMonkeySteve/ruby-mplayer.git' #path: '/home/steve/src/ruby-mplayer'
 gem 'rack-openid', :require => 'rack/openid'
 gem 'ruby-ogginfo',   require: false,       git: 'https://github.com/CodeMonkeySteve/ruby-ogginfo.git'
-gem 'ruby-audioinfo', require: 'audioinfo', git: 'https://github.com/CodeMonkeySteve/ruby-audioinfo.git' #:path => '/home/steve/src/forks/ruby-audioinfo
+gem 'ruby-audioinfo', require: 'audioinfo', git: 'https://github.com/CodeMonkeySteve/ruby-audioinfo.git' #path: '/home/steve/src/forks/ruby-audioinfo
 gem 'thin'
 
 group :production do

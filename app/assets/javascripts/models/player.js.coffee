@@ -23,12 +23,17 @@ class @Player
       @_parse(data)
       opts.success()  if opts.success?
 
-      clearTimeout(@pollTimer)  if @pollTimer?
+      @stopPoll()
       @pollTimer = setTimeout( =>
         @_refresh()
       ,  @pollTime)
 
     jQuery.ajax( url, req )
+
+  stopPoll: ->
+    if @pollTimer?
+      clearTimeout(@pollTimer)
+      @pollTimer = null
 
   _parse: (resp) ->
     if resp.status != @status
