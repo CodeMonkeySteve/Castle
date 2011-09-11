@@ -1,27 +1,12 @@
 .player.panel
-  .volume{style: 'display: none'}
-    %a.up
-    .slider
-    %a.down
-    %span.text
-
   .controls
-    %a.play{href: '#'}
-    %a.pause{href: '#'}
-    %a.stop{href: '#'}
-    %a.vol_down{href: '#'}
-    %a.vol_up{href: '#'}
-    %a.upload{href: '#upload'}
+    %a.play{href: '#',   title: 'Play'}
+    %a.pause{href: '#',  title: 'Pause'}
+    %a.next{href: '#',   title: 'Next Track'}
+    %a.vol_dn{href: '#', title: 'Volume Down'}
+    %a.vol_up{href: '#', title: 'Volume Up'}
+    %a.upload{href: '#upload', title: 'Upload Tracks'}
 
   .pos{style: 'display: none'}
     .progress
     .text
-
-{{if playlist.length}}
-.playlist.panel
-  %ul.tracks
-    {{each playlist}}
-    %li.track {{tmpl($value) 'player_track'}}
-    {{/each}}
-{{/if}}
-

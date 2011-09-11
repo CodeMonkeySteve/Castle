@@ -24,28 +24,33 @@ module ::Guard
 
   protected
     def build_assets
-      assets = Rails.application.config.assets.precompile
-
-      # clear existing assets before rebuilding, in case of failure
-      FileUtils.rm_f( assets.map { |a|  CompiledAssetDir+a } )
-
       success = begin
-        Rails.application.assets.precompile(*assets)
+        config = Rails.application.config
+        env    = Rails.application.assets
+        target = Pathname.new(File.join(Rails.public_path, config.assets.prefix))
+
+        config.assets.precompile.each do |path|
+          env.each_logical_path do |logical_path|
+            if path.is_a?(Regexp)
+              next unless path.match(logical_path)
+            else
+              next unless File.fnmatch(path.to_s, logical_path)
+            end
+
+            if asset = env.find_asset(logical_path)
+              filename = target.join(File.basename(logical_path))
+              FileUtils.mkdir_p filename.dirname
+              asset.write_to(filename)
+            end
+          end
+        end
         true
       rescue
         puts $!.message
         false
       end
-      fix_asset_names
 
       notify( "Build #{success ? 'success' : 'failure'}", success )
-    end
-
-    def fix_asset_names
-      Pathname.glob(CompiledAssetDir+'*')  do |path|
-        next  unless path.to_s =~ /^(.+)-[0-9a-f]{32}(\.\w+)$/i
-        path.rename($1+$2)
-      end
     end
 
     def notify( msg, success )

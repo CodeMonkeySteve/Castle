@@ -1,0 +1,12 @@
+.track{id: '${$data.id}'}
+  .controls
+    %a{href: '#', class: "vote_up {{if $data.userRating() == 1}}selected{{/if}}"}
+    %a{href: '#', class: "vote_dn {{if $data.userRating() == 0}}selected{{/if}}"}
+
+  .title ${$data.get("title")}
+  .info
+    .artist ${$data.get("artist")}
+    .album
+      ${$data.get("album")}
+      {{if attributes.year}} (${$data.get("year")}) {{/if}}
+

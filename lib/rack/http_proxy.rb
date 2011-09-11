@@ -34,8 +34,8 @@ class Rack::HttpProxy
     method = req.request_method.downcase.to_sym
 
     return @app.call(env) unless uri = uri_for(req)
-puts uri
 
+puts "#{env['REQUEST_METHOD']}: #{uri}"
     opts = {}
     head = opts[:head] = {}
 

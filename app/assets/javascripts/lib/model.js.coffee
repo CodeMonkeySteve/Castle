@@ -1,13 +1,12 @@
-class App.Model extends Backbone.Model
+class App.Model extends Backbone.CouchDB.Model
   initialize: ->
     return unless @defaults?
     attrs = owl.deepCopy(@defaults)
     jQuery.extend( true, attrs, @attributes )
     @attributes = attrs
-    @bind 'change', () -> App.View.updateAutocomplete(null, @collection)
 
   set: (attrs, opts) ->
-    return this  unless _.size(attrs)
+    return this  unless attrs? && _.keys(attrs).length
 
     out_attrs = {}
     for key, val of attrs

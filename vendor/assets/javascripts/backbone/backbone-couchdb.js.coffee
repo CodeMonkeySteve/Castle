@@ -1,5 +1,8 @@
-# (c) 2011 Jan Monschke
-# backbone-couchdb.js is licensed under the MIT license.
+###
+(c) 2011 Jan Monschke
+v1.0
+backbone-couchdb.js is licensed under the MIT license.
+###
 
 Backbone.couch_connector = con =
   # some default config values for the database connections
@@ -50,13 +53,15 @@ Backbone.couch_connector = con =
   read_collection : (coll, opts) ->
     _view = @config.view_name
     keys = [@helpers.extract_collection_name coll]
+    console.log "keys", keys, @helpers.extract_collection_name(coll)
     if coll.db?
       coll.listen_to_changes() if coll.db.changes or @config.global_changes
       if coll.db.view?
         _view = coll.db.view
-        keys = coll.db.keys ? null
-
-    @helpers.make_db().view "#{@config.ddoc_name}/#{_view}",
+      if coll.db.keys?
+        keys = coll.db.keys 
+    
+    _opts = 
       keys : keys
       success : (data) =>
         _temp = []
@@ -65,6 +70,13 @@ Backbone.couch_connector = con =
         opts.success _temp
       error : ->
         opts.error()
+    
+    # delete keys if a custom view is requested but no custom keys 
+    if coll.db? and coll.db.view? and not coll.db.keys?
+      delete _opts.keys
+    
+    @helpers.make_db().view "#{@config.ddoc_name}/#{_view}", _opts
+
 
   # Reads a model from the couchdb by it's ID 
   read_model : (model, opts) ->
@@ -112,15 +124,17 @@ Backbone.sync = (method, model, opts) ->
     when "update" then con.update model, opts
     when "delete" then con.del model, opts
 
+Backbone.CouchDB = {}
+
 # Adds some more methods to Collections that are needed for the connector ###
-class Backbone.Collection extends Backbone.Collection
+class Backbone.CouchDB.Collection extends Backbone.Collection
   initialize : ->
-    @listen_to_changes() if !@_db_changes_enabled && (@db.changes or con.config.global_changes)
+    @listen_to_changes() if !@_db_changes_enabled && ((@db and @db.changes) or con.config.global_changes)
 
   # Manually start listening to real time updates
   listen_to_changes : ->
     # don't enable changes feed a second time
-    unless @_db_changes_enabled 
+    unless @_db_changes_enabled
       @_db_changes_enabled = true
       @_db_inst = con.helpers.make_db() unless @_db_inst
       @_db_inst.info
@@ -151,7 +165,7 @@ class Backbone.Collection extends Backbone.Collection
       if obj?
         # remove from collection if doc has been deleted on the server
         if _doc.deleted
-          @remove obj 
+          @remove obj
         else
           # set new values if _revs are not the same
           obj.set _doc.doc unless obj.get("_rev") == _doc.doc._rev 
@@ -159,6 +173,6 @@ class Backbone.Collection extends Backbone.Collection
         @add _doc.doc if !_doc.deleted
       
 
-class Backbone.Model extends Backbone.Model
+class Backbone.CouchDB.Model extends Backbone.Model
   # change the idAttribute since CouchDB uses _id
   idAttribute : "_id"

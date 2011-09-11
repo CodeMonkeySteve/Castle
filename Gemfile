@@ -1,7 +1,7 @@
 source :rubygems
 
 # core
-rails_ver = '~> 3.1.0.rc'
+rails_ver = '~> 3.1.0'
 gem 'railties',       rails_ver
 gem 'actionpack',     rails_ver, require: %w(action_controller/railtie)
 gem 'activesupport',  rails_ver, require: %w(active_support/railtie)
@@ -31,7 +31,7 @@ end
 # other
 gem 'active_reload'
 gem 'compass', git: 'https://github.com/chriseppstein/compass.git', branch: 'rails31'
-gem 'mplayer', git: 'https://github.com/CodeMonkeySteve/ruby-mplayer.git' #path: '/home/steve/src/ruby-mplayer'
+gem 'mplayer', path: '/home/steve/src/ruby-mplayer' #git: 'https://github.com/CodeMonkeySteve/ruby-mplayer.git'
 gem 'rack-openid', :require => 'rack/openid'
 gem 'ruby-ogginfo',   require: false,       git: 'https://github.com/CodeMonkeySteve/ruby-ogginfo.git'
 gem 'ruby-audioinfo', require: 'audioinfo', git: 'https://github.com/CodeMonkeySteve/ruby-audioinfo.git' #path: '/home/steve/src/forks/ruby-audioinfo

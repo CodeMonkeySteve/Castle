@@ -16,8 +16,8 @@ class PlayersController < ApplicationController
     render json: @player.as_json
   end
 
-  def stop
-    @player.stop
+  def next()
+    @player.next
     render json: @player.as_json
   end
 
@@ -26,6 +26,11 @@ class PlayersController < ApplicationController
     @player.volume = %w(- +).include?(vol[0]) ? (@player.volume + vol.to_i) : vol.to_i
     render json: @player.as_json
   end
+
+def mood
+  @player.mood = params[:mood]
+  render json: @player.as_json
+end
 
 protected
   def find_player

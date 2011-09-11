@@ -1,5 +1,6 @@
 - content_for :page_tail do
   :javascript
     jQuery(document).ready(function() {
+      App.user = new User(#{current_user.to_json});
       App.init();
     });

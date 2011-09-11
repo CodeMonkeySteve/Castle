@@ -1,73 +1,62 @@
 class App.Views.Player extends App.View
-  className: 'player'
-
   events:
-    'click .controls .play':     'play'
-    'click .controls .pause':    'pause'
-    'click .controls .stop':     'stop'
-    'click .controls .vol_down': 'vol_down'
-    'click .controls .vol_up':   'vol_up'
+    'click .controls .play':    'play'
+    'click .controls .pause':   'pause'
+    'click .controls .next':    'next'
+    'click .controls .vol_dn':  'vol_dn'
+    'click .controls .vol_up':  'vol_up'
 
   play:  -> if App.player.paused  then App.player.pause()  else App.player.play()
   pause: -> App.player.pause()
-  stop:  -> App.player.stop()
-  vol_down: (ev) -> App.player.incrVol(-5)
-  vol_up:   (ev) -> App.player.incrVol(+5)
+  next:  -> App.player.next()
+  vol_dn: (ev) -> App.player.incrVol(-5)
+  vol_up: (ev) -> App.player.incrVol(+5)
 
   initialize: ->
     _.bindAll(this, 'render', 'updateStatus', 'updatePos', 'updateVol')
-    App.player.bind('change:status', @updateStatus)
-    App.player.bind('change:track', @render)
-    App.player.bind('change:playlist', @render)
-    App.player.bind('change:pos', @updatePos)
-    App.player.bind('change:volume', @updateVol)
+    App.player
+      .bind('change:status', @updateStatus)
+      .bind('change:pos', @updatePos)
+      .bind('change:volume', @updateVol)
 
   render: ->
     $(@el).html( $.tmpl('player_main', App.player) )
 
-    @volume = @$('.volume .slider').slider
-      orientation: 'vertical', range: 'min', min: 0, max: 100
-      slide: (event, ui) => @$('.volume .level').html(ui.value)
-      stop:  (event, ui) -> App.player.setVol(ui.value)
-
     @pos = @$('.pos .progress').progressbar()
-
     @play_btn  = @$('.controls a.play' ).button( icons: { primary: 'ui-icon-play'  }, text: false )
     @pause_btn = @$('.controls a.pause').button( icons: { primary: 'ui-icon-pause' }, text: false )
-    @stop_btn  = @$('.controls a.stop' ).button( icons: { primary: 'ui-icon-stop'  }, text: false )
-    @$('.controls a.upload' ).button( icons: { primary: 'ui-icon-plusthick' }, text: false )
-    @$('.controls a.vol_down' ).button( icons: { primary: 'ui-icon-volume-off' }, text: false )
-    @$('.controls a.vol_up'   ).button( icons: { primary: 'ui-icon-volume-on' }, text: false )
+
+    for c, i of { next: 'seek-end', upload: 'plusthick', vol_dn: 'volume-off', vol_up: 'volume-on' }
+      @$(".controls a.#{c}" ).button( icons: { primary: "ui-icon-#{i}"  }, text: false )
+
     @updateStatus()
     @updatePos(App.player.pos)
     @updateVol(App.player.volume)
     App.player._refresh()
 
   unrender: ->
-    _stopPoll()
+    @_stopPoll()
     App.player.stopPoll()
 
   updateStatus: ->
     p = App.player
-    if p.stopped || !p.loaded
-      $('.volume').hide()
+    if !p.loaded
       @play_btn.show()
       @pause_btn.hide()
-      @stop_btn.button('disable')
+      @$('.next').button('disable')
     else if p.paused
       @play_btn.show()
       @pause_btn.hide()
-      @stop_btn.button('enable')
+      @$('.next').button('enable')
       @$('.pos').show()
     else
       @play_btn.hide()
       @pause_btn.show()
-      @stop_btn.button('enable')
+      @$('.next').button('enable')
       @$('.pos').show()
 
     if p.playing || p.paused  then @$('.pos')     .show()  else @$('.pos')     .hide()
     if p.loaded  && p.track   then @$('.track')   .show()  else @$('.track')   .hide()
-    if p.playlist.length      then @$('.playlist').show()  else @$('.playlist').hide()
 
     if @posTimer?
       clearInterval(@posTimer)
@@ -75,7 +64,7 @@ class App.Views.Player extends App.View
 
     if p.playing
       @posTimer = setInterval( =>
-        @updatePos(App.player.pos += 1)  if App.player.pos? && App.player.track? && (App.player.pos <= App.player.track.length)
+        @updatePos(App.player.pos += 1)  if App.player.pos? && App.player.track? && (App.player.pos < App.player.track.length)
       ,  1000)
     true
 
@@ -87,13 +76,11 @@ class App.Views.Player extends App.View
 
   updateVol: (vol) ->
     return unless vol?
-    @volume.progressbar('value', vol)
-    @$('.volume .text').html(vol)
-    if App.player.stopped || !App.player.loaded
-      $('.vol_up,.vol_down').button('disable')
+    if !App.player.loaded
+      $('.vol_up,.vol_dn').button('disable')
     else 
       $('.vol_up'  ).button(if App.player.volume < 100 then 'enable' else 'disable')
-      $('.vol_down').button(if App.player.volume >   0 then 'enable' else 'disable')
+      $('.vol_dn').button(if App.player.volume >   0 then 'enable' else 'disable')
 
   _stopPoll: ->
     if @posTimer?

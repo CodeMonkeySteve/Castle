@@ -1,12 +1,11 @@
-root = exports ? this
-root.App =
+@App =
   Views: {}
   Collections: {}
 
   init: ->
     new App.Router()
     App.player = new Player('/player', 10.0)
-    Backbone.history.start()
+    App.user.tags -> Backbone.history.start()
 
 $(document).ajaxSend (e, xhr, opts) ->
   token = $("meta[name='csrf-token']").attr('content')

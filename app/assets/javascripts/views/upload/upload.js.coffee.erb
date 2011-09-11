@@ -26,4 +26,5 @@ class App.Views.Upload extends App.View
     tags = $('.controls .tags').val()
     if tags? && tags.length
       id = JSON.parse(info.response)._id
+      #FIXME
       #jQuery.ajax("/tracks/#{id}", type: 'PUT', data: { id: id, track: {tags: tags} } )

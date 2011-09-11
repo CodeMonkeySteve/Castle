@@ -1,2 +1,2 @@
 describe "Application", ->
-  #loadFixtures 'images.html'
+  #loadFixtures '.html'

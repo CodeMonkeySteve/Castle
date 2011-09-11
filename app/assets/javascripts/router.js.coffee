@@ -4,14 +4,19 @@ class App.Router extends Backbone.Router
     'player': 'player'
     'upload': 'upload'
 
+  initialize: ->
+    @views = []
+
   player: ->
-    @_useView( new App.Views.Player() )
+    @useViews( new App.Views.Player(), new App.Views.Playlist() )
 
   upload: ->
-    @_useView( new App.Views.Upload() )
+    @useViews( new App.Views.Upload() )
 
-  _useView: (view) ->
-    @view.unrender()  if @view? && @view.unrender?
-    @view = view
-    $('body').html( @view.el )
-    @view.render()
+  useViews: (views...) ->
+    view.unrender?()  for view in @views
+    @views = views
+    body = $('body').empty()
+    for view in @views
+      body.append(view.el)
+      view.render()

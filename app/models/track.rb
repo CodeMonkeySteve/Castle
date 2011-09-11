@@ -18,13 +18,26 @@ class Track < CouchRest::Model::Base
 
   design do
     view :by_artist_and_album_and_title, :allow_nil => true
-    view :by_tag,
-      :map => "function(doc) {
-        if (doc['type'] == 'Track' && doc.tags) {
-          doc.tags.forEach(function(tag) {  emit(tag, 1)  })
+    view :by_tag_and_target,
+      map: "function(doc) {
+        if (doc['type'] == 'Tag' && doc.tags) {
+          for (var tag in doc.tags) {
+            emit([tag, doc.target_id], { count: 1, sum: doc.tags[tag] })
+          }
         }
       }",
-      :reduce => "function(keys, values, rereduce) {  return sum(values)  }"
+      reduce: "function(keys, values, rereduce) {
+        var sum = 0, count = 0;
+        for (var i in values) {
+          sum += values[i].sum
+          count += values[i].count
+        }
+        return sum / count;
+      }"
+  end
+
+  def self.by_tag(tag)
+    Tag.by_tag_and_target.startkey([tag]).endkey([tag, {}]).map(&:target)
   end
 
   def self.from_file( path, content_type = nil )
@@ -35,6 +48,7 @@ class Track < CouchRest::Model::Base
     track = self.find_by_artist_and_album_and_title([artist, album, title])
 
     track ||= Track.new( tag.reject { |k, v| v.blank? } )
+    track.define_singleton_method(:content_type) { info.content_type }
     track
   end
 end

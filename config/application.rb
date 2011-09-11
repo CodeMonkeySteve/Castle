@@ -29,29 +29,27 @@ module Castle
       g.fixture_replacement :factory_girl, :dir => 'spec/factories'
     end
 
-    # CouchDB
-    CouchRest::Model::Base.configure do |conf|
-      conf.connection[:join] = '-'
-    end
-
     # Asset pipeline
     config.assets.enabled = true
     config.assets.precompile = %w(all.js all.css)
     unless Rails.env.production?
       jss = Rails.root+'spec/javascripts'
       config.assets.paths += [jss+'support',jss].map(&:to_s)
-      config.assets.precompile << 'test.js'
+      config.assets.precompile += ['test.js']
     end
 
     # OpenID
-    config.middleware.insert_after ActionDispatch::Session::CookieStore, Rack::OpenID #, OpenidMongodbStore::Store.new
+    config.middleware.insert_after ActionDispatch::Session::CookieStore, Rack::OpenID
 
     # Rack fiber pool
     config.middleware.insert_before 0, Rack::FiberPool
     config.threadsafe!
+
+    # Start playback
+    config.after_initialize { EM.next_tick { Fiber.new { Castle.player }.resume } }
   end
 
   def self.player
-    @player ||= Player.new
+    @player ||= Player.new 'office'
   end
 end
